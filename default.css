@@ -1,0 +1,22 @@
+/* color for kanji grade */
+.grade-back-on {
+  background-color: lavender;
+}
+.grade-e1.color-on {
+  color: crimson;
+}
+.grade-e2.color-on {
+  color: orchid;
+}
+.grade-e3.color-on {
+  color: darkorange;
+}
+.grade-e4.color-on {
+  color: limegreen;
+}
+.grade-e5.color-on {
+  color: cornflowerblue;
+}
+.grade-e6.color-on {
+  color: darkturquoise;
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+　  <meta charset="utf-8">
+    <title>OCR test page (jp)</title>
+    <meta name="description" content="OCR test page (jp)">
+    <meta name="author" content="yellow-streritzia">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <!--
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    -->
+    <script type="text/javascript" src='https://unpkg.com/tesseract.js@v2.1.1/dist/tesseract.min.js'></script>
+    <script type="text/javascript" src="./ocr.js"></script>
+  </head>
+  <body>
+    <div class="box">
+      <h2 class="title">OCR test page (jp)</h2>
+    </div>
+
+    <div class="box">
+      <canvas id="preview-canvas" style="width:60vw;display:none"></canvas>
+      <canvas id="result-canvas" width="300" height="300" style="display:none"></canvas>
+      <div class="content" id="resultArea" name="resultArea">
+        結果表示
+      </div>
+      
+      <button id="select-file" type="button" class="button is-small">
+        <span class="icon is-small">
+          <i class="fas fa-file-import"></i>
+        </span>
+      </button>
+      <div class="select is-small">
+        <select id="detect-direction">
+          <option value="horizontal">横書き</option>
+          <option value="vertical">縦書き</option>
+        </select>
+      </div>
+      
+      <button id="recognize" type="button" class="button is-small">
+        <span class="icon is-small">
+          <i class="fas fa-microscope"></i>
+        </span>
+        <span>読取り</span>
+      </button>
+      <input type="file" id="select-file-input" accept="image/*" capture="camera" style="display:none" />
+    </div>
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          <strong>© 2020 yellow-streritzia All rights reserved.</strong>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
