@@ -1,0 +1,12 @@
+FROM python:alpine
+WORKDIR /app
+COPY . /app
+
+RUN ["apk", "add", "tesseract-ocr"]
+RUN ["apk", "add", "tesseract-ocr-data-jpn"]
+RUN ["apk", "add", "build-base"]
+RUN ["apk", "add", "zlib-dev"]
+RUN ["apk", "add", "jpeg-dev"]
+RUN ["pip", "install", "Flask", "pytesseract"]
+
+CMD python /app/ocr-server.py
