@@ -51,17 +51,37 @@ window.addEventListener( "DOMContentLoaded", function() {
     const canvas_image = canvas.toDataURL("image/png");
  
     // call Web API , OCR
-    const fetch_res = await fetch('/recognize', {
+    const echo_res = await fetch('/echo');
+    const result_echo = await echo_res.data;
+
+    const fetch_recognize_res = await fetch('/recognize', {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json'},
       body: JSON.stringify({data: canvas_image, direction: direction_value})
-    }).then(res => res.json()
-    ).then(json => {
-      if(json['status'] == 'false'){ //Flask側で"false"と判断されたらアラートする
-        alert(json['message'])
-      }
-      afterPostRecognize(json['result']);
     });
+    
+    const result_recognize_json = await fetch_recognize_res.json()
+    if(result_recognize_json['status'] == 'error'){ //Flask側で"error"と判断されたらアラートする
+      alert('failed to post OCR request');
+    }
+    
+    const orc_request_id = result_recognize_json['requestid'];
+    let ocr_result = '未認識';    
+    let params = new URLSearchParams();
+    params.set('requestid', orc_request_id);
+    for (let i = 0;  i < 10;  i++) {
+      const echo_res = await fetch('/result?'+ params.toString())
+      const result_result = await echo_res.json()
+      if ( 'result' in result_result && 
+           'status' in result_result &&
+           result_result['status'] == 'success') {
+        ocr_result = result_result['result']
+        break;
+      }
+      await new Promise(r => setTimeout(r,1000));
+    }
+    
+    afterPostRecognize(result_recognize_json['result']);
   }
 
   const afterPostRecognize = async ( result ) => {
