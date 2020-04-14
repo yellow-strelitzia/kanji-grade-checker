@@ -8,7 +8,6 @@ module.exports = async (req, res) => {
     let axios_result = await axios.get(url + 'echo');
     res.status(200).send(axios_result.data);
   } else if ( parameters.type == 'recognize' ) {
-    const { data, direction } = JSON.parse(event.body);
     let axios_result = await axios.post(url + 'recognize', {
       data: parameters.data,
       direction: parameters.direction

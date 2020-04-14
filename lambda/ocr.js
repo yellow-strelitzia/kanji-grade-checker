@@ -11,7 +11,6 @@ exports.handler = async function(event, context, callback) {
       body: axios_result.data
     });
   } else if ( parameters.type == 'recognize' ) {
-    const { data, direction } = JSON.parse(event.body);
     let axios_result = await axios.post(url + 'recognize', {
       data: parameters.data,
       direction: parameters.direction
