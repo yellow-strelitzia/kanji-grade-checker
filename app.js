@@ -293,16 +293,41 @@ window.addEventListener( "DOMContentLoaded", function() {
         url = "https://kanji-grade-checker.now.sh/api/ocr";
       }
       const canvas_image = canvas.toDataURL("image/png");
-      const ocr_res = await fetch(url, {
+
+      // echo for check ocr server activity
+      let echoparams = new URLSearchParams();
+      echoparams.set("type", "echo");
+      const echo_res = await fetch(url + "?" + echoparams.toString());
+      const result_echo = await echo_res.data;
+
+      const fetch_recognize_res = await fetch(url, {
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json"},
-        body: JSON.stringify({"data": canvas_image, "direction": direction_value})
+        body: JSON.stringify({"type": "recognize",
+                              "data": canvas_image, 
+                              "direction": direction_value})
       });
-      ocr_res_json = await ocr_res.json();
-      if(ocr_res_json["status"] == "false"){ //WEBAPI側で"false"と判断されたらアラートする
-        alert(ocr_res_json["message"])
+      const result_recognize_json = await fetch_recognize_res.json();
+      if(result_recognize_json["status"] == "error"){ //WEBAPI側で"error"と判断されたらアラートする
+        alert("failed to post OCR request");
       }
-      ocrresult = ocr_res_json["result"];
+
+      const orc_request_id = result_recognize_json['requestid'];
+      let ocr_result = "未認識";    
+      let resultparams = new URLSearchParams();
+      resultparams.set("type", "result");
+      resultparams.set("requestid", orc_request_id);
+      for (let i = 0;  i < 10;  i++) {
+        const echo_res = await fetch(url + '?' + resultparams.toString())
+        const result_result = await echo_res.json()
+        if ( "result" in result_result && 
+             "status" in result_result &&
+             result_result["status"] == "success") {
+          ocr_result = result_result['result']
+          break;
+        }
+        await new Promise(r => setTimeout(r,1000));
+      }
     } else {
       const { data: { text } } = await Tesseract.recognize(canvas, ocrLanguage, {
           tessedit_char_blacklist : "e",
@@ -310,8 +335,8 @@ window.addEventListener( "DOMContentLoaded", function() {
           preserve_interword_spaces : 0
       });
       // check recognition result
-      let ocrresult = text.replace(/ /g,"");  // current hack, captured result often include unexpected space.
-      if ( ocrresult.length === 0 ) {
+      let ocr_result = text.replace(/ /g,"");  // current hack, captured result often include unexpected space.
+      if ( ocr_result.length === 0 ) {
         progressCaption.innerHTML = "文字を認識できませんでした";
         await new Promise(r => setTimeout(r,2000));
       }
@@ -323,7 +348,7 @@ window.addEventListener( "DOMContentLoaded", function() {
     modalProgress.classList.toggle( "is-active" );
 
     let target = document.getElementById( "originalText" );
-    target.value = ocrresult;
+    target.value = ocr_result;
   };
   let btnRecognizeCapture = document.getElementById( "recognize-capture" );
   btnRecognizeCapture.addEventListener( "click", recognizCapture );
