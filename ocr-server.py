@@ -53,6 +53,7 @@ def ocr_worker():
             result_time = result_dict[key]['time']
             if (datetime.datetime.now() - result_time).total_seconds() > 300:
                 del result_dict[key]
+                print('result of request id[' + key + '] now removed')
 
         time.sleep(0.1)
 
