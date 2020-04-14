@@ -78,7 +78,7 @@ window.addEventListener( "DOMContentLoaded", function() {
         ocr_result = result_result['result']
         break;
       }
-      await new Promise(r => setTimeout(r,1000));
+      await new Promise(r => setTimeout(r,2000));
     }
     
     afterPostRecognize(ocr_result);
