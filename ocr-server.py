@@ -1,7 +1,7 @@
-import pytesseract
 import shutil
 import threading
 import os
+import sys
 import time
 import datetime
 import io
@@ -10,7 +10,9 @@ import random
 import base64
 import uuid
 import queue
+import logging
 import traceback
+import pytesseract
 from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS, cross_origin
 
@@ -20,6 +22,8 @@ except ImportError:
     import Image
 
 app = Flask(__name__)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.INFO)
 CORS(app)
 
 #Queue for process OCR
