@@ -317,7 +317,7 @@ window.addEventListener( "DOMContentLoaded", function() {
       let resultparams = new URLSearchParams();
       resultparams.set("type", "result");
       resultparams.set("requestid", orc_request_id);
-      for (let i = 0;  i < 10;  i++) {
+      for (let i = 0;  i < 15;  i++) {
         const echo_res = await fetch(url + '?' + resultparams.toString())
         const result_result = await echo_res.json()
         if ( "result" in result_result && 
@@ -326,7 +326,7 @@ window.addEventListener( "DOMContentLoaded", function() {
           ocr_result = result_result['result']
           break;
         }
-        await new Promise(r => setTimeout(r,1000));
+        await new Promise(r => setTimeout(r,2000));
       }
     } else {
       const { data: { text } } = await Tesseract.recognize(canvas, ocrLanguage, {

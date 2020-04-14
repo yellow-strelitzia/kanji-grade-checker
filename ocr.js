@@ -69,7 +69,7 @@ window.addEventListener( "DOMContentLoaded", function() {
     let ocr_result = '未認識';    
     let params = new URLSearchParams();
     params.set('requestid', orc_request_id);
-    for (let i = 0;  i < 10;  i++) {
+    for (let i = 0;  i < 15;  i++) {
       const echo_res = await fetch('/result?'+ params.toString())
       const result_result = await echo_res.json()
       if ( 'result' in result_result && 
