@@ -81,7 +81,7 @@ window.addEventListener( "DOMContentLoaded", function() {
       await new Promise(r => setTimeout(r,1000));
     }
     
-    afterPostRecognize(result_recognize_json['result']);
+    afterPostRecognize(ocr_result);
   }
 
   const afterPostRecognize = async ( result ) => {
