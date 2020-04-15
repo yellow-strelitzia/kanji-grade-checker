@@ -9,6 +9,7 @@ module.exports = (req, res) => {
   } else {
     parameters = req.body;
   }
+  console.log(parameters);
 
   if ( parameters.type == 'echo' ) {
     axios.get( url + 'echo' )
