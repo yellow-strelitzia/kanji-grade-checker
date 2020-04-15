@@ -28,7 +28,7 @@ module.exports = (req, res) => {
     });
   } else if ( parameters.type == 'result') {
     axios.get(url + 'result', {
-            params: { data: parameters.requestid } } )
+            params: { requestid: parameters.requestid } } )
          .then( axios_result => {
            res.status(200).json(axios_result.data);
            console.log('result extracted > ' + parameters.requestid );
