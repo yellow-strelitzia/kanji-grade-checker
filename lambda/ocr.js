@@ -23,7 +23,7 @@ exports.handler = async function(event, context, callback) {
       data: parameters.data,
       direction: parameters.direction
     });
-    console.log('recognize result > ' + axios_result.data);
+    console.log('recognize result > ' + axios_result.data.status);
     callback(null, {
       statusCode: 200,
       body: JSON.stringify(axios_result.data)
@@ -31,7 +31,7 @@ exports.handler = async function(event, context, callback) {
   } else if ( parameters.type == 'result') {
     let axios_result = await axios.get(url + 'result', {
       params: {
-        data: parameters.requestid
+        requestid: parameters.requestid
       }
     });
     callback(null, {
