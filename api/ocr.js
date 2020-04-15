@@ -7,12 +7,13 @@ module.exports = async (req, res) => {
   if ( parameters.type == 'echo' ) {
     let axios_result = await axios.get(url + 'echo');
     res.status(200).send(axios_result.data);
+    console.log('echo called');
   } else if ( parameters.type == 'recognize' ) {
     let axios_result = await axios.post(url + 'recognize', {
       data: parameters.data,
       direction: parameters.direction
     });
-    console.log('recognize result > ' + axios_result.data);
+    console.log('recognize result > ' + axios_result.data.status);
     res.status(200).json(axios_result.data);
   } else if ( parameters.type == 'result') {
     let axios_result = await axios.get(url + 'result', {
