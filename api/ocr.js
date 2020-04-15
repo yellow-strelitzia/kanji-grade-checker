@@ -31,7 +31,9 @@ module.exports = (req, res) => {
             params: { requestid: parameters.requestid } } )
          .then( axios_result => {
            res.status(200).json(axios_result.data);
-           console.log('result extracted > ' + parameters.requestid );
+           console.log('result query status [' + 
+                       parameters.requestid + ']:' +
+                       axios_result.data.status);
     });
   }  
 }
