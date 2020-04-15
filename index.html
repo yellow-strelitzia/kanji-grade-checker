@@ -92,37 +92,41 @@
           </audio>
         </section>
         <footer class="modal-card-foot">
-          <button id="start-camera" type="button" class="button is-small">
-            <span class="icon is-small">
-              <i class="fas fa-video"></i>
-            </span>
-            <span>開始</span>
-          </button>
-          <button id="capture-camera" type="button" class="button is-small">撮影</button>
-          <button id="select-file" type="button" class="button is-small">
-            <span class="icon is-small">
-              <i class="fas fa-file-import"></i>
-            </span>
-          </button>
-          <input type="file" id="select-file-input" accept="image/*" capture="camera" style="display:none" />
-          <div class="select is-small">
-            <select id="detect-direction">
-              <option value="horizontal">横書き</option>
-              <option value="vertical">縦書き</option>
-            </select>
+          <div class="box">
+            <button id="start-camera" type="button" class="button is-small">
+              <span class="icon is-small">
+                <i class="fas fa-video"></i>
+              </span>
+              <span>開始</span>
+            </button>
+            <button id="capture-camera" type="button" class="button is-small">撮影</button>
+            <button id="select-file" type="button" class="button is-small">
+              <span class="icon is-small">
+                <i class="fas fa-file-import"></i>
+              </span>
+            </button>
+            <input type="file" id="select-file-input" accept="image/*" capture="camera" style="display:none" />
+            <div class="select is-small">
+              <select id="detect-direction">
+                <option value="horizontal">横書き</option>
+                <option value="vertical">縦書き</option>
+              </select>
+            </div>
           </div>
-          <label class="checkbox">
-            <input type="checkbox" id="local-server-flag">
-            <label class="label is-small">サーバーで実行</label>
-          </label>
-          <button id="recognize-capture" type="button" class="button is-small">
-            <span class="icon is-small">
-              <i class="fas fa-microscope"></i>
-            </span>
-            <span>読取り</span>
-          </button>
-          <button id="close-camera-modal" type="button" class="button is-small is-danger close-modal stop-camera" 
-            data-target="camera-modal">閉じる</button>
+          <div>
+            <label class="checkbox">
+              <input type="checkbox" id="local-server-flag">
+              <label class="label is-small">サーバーで実行</label>
+            </label>
+            <button id="recognize-capture" type="button" class="button is-small">
+              <span class="icon is-small">
+                <i class="fas fa-microscope"></i>
+              </span>
+              <span>読取り</span>
+            </button>
+            <button id="close-camera-modal" type="button" class="button is-small is-danger close-modal stop-camera" 
+              data-target="camera-modal">閉じる</button>
+          </div>
         </footer>
       </div>
     </div>
