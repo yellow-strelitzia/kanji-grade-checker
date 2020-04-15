@@ -4,16 +4,13 @@ module.exports = (req, res) => {
   const url = 'http://yellow-strelitzia-ocr-server1.herokuapp.com/';
   
   let parameters = null;
-  if ( Object.keys(req.query) > 0 ){
+  if ( Object.keys(req.query).length > 0 ){
     parameters = req.query;
+    console.log('parameters is query');
   } else {
     parameters = req.body;
+    console.log('parameters is body');
   }
-  console.log('req.query' + req.query);
-  console.log('req.query.type' + req.query.type);
-  console.log('req.query["type"]' + req.query["type"]);
-  console.log('req.body' + req.query);
-  console.log(parameters);
 
   if ( parameters.type == 'echo' ) {
     axios.get( url + 'echo' )
