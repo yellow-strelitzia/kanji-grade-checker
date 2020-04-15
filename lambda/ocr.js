@@ -2,7 +2,14 @@ const axios = require('axios');
 
 exports.handler = async function(event, context, callback) {
   const url = 'http://yellow-strelitzia-ocr-server1.herokuapp.com/';
-  const parameters = JSON.parse(event.body);
+  let parameters = null;
+  if ( event.httpMethod == 'GET' ){
+    parameters = event.queryStringParameters;
+    console.log('parameters is query');
+  } else {
+    parameters = JSON.parse(event.body);
+    console.log('parameters is body');
+  }
 
   if ( parameters.type == 'echo' ) {
     let axios_result = await axios.get(url + 'echo');
@@ -10,6 +17,7 @@ exports.handler = async function(event, context, callback) {
       statusCode: 200,
       body: axios_result.data
     });
+    console.log('echo called'); 
   } else if ( parameters.type == 'recognize' ) {
     let axios_result = await axios.post(url + 'recognize', {
       data: parameters.data,
@@ -29,6 +37,9 @@ exports.handler = async function(event, context, callback) {
     callback(null, {
       statusCode: 200,
       body: JSON.stringify(axios_result.data)
-    });    
+    });
+    console.log('result query status [' + 
+                parameters.requestid + ']:' +
+                axios_result.data.status);
   }
 };
