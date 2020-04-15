@@ -361,11 +361,17 @@ window.addEventListener( "DOMContentLoaded", function() {
     element.addEventListener( "click", ( event ) => {
       let flag = element.children[0].classList.contains("color-on");
       for (const toggleElement of document.getElementsByClassName("toggle-color")) {
-        if ( toggleElement.classList.contains(element.dataset.target) ) {
+        let gradeTarget = toggleElement.classList.contains( element.dataset.target );
+        let buttonTarget = toggleElement.classList.contains( "tobble-button-caption" );
+        if ( gradeTarget ) {
           if ( flag )
             toggleElement.classList.remove("color-on");
           else
             toggleElement.classList.add("color-on");
+          if ( flag && !buttonTarget )
+            toggleElement.classList.remove("grade-back-on");
+          if ( !flag && !buttonTarget )
+            toggleElement.classList.add("grade-back-on");
         }
       }
     } );
