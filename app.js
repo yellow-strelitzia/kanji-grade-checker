@@ -366,7 +366,7 @@ window.addEventListener( "DOMContentLoaded", function() {
   const actionCheckLocalServer = ( event ) => {
     let checkLocalServer = document.getElementById( "local-server-flag" );
     if ( checkLocalServer.checked ) {
-      alert("alert");
+      alert("サーバーで実行をチェックして読取りボタンを押した場合、画像をサーバーへ送信して処理をします。");
     }
   };
   let checkLocalServer = document.getElementById( "local-server-flag" );
