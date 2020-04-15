@@ -84,12 +84,6 @@
           </button>
         </header>
         <section class="modal-card-body">
-          <video id="video-camera" style="width:60vw;height:60vh;"></video>
-          <canvas id="preview-canvas" style="width:60vw;display:none"></canvas>
-          <canvas id="result-canvas" width="300" height="300" style="display:none"></canvas>
-          <audio id="capture-sound" preload="auto">
-            <source src="camera-shutter1.mp3" type="audio/mp3">
-          </audio>
           <div class="box">
             <button id="start-camera" type="button" class="button is-small">
               <span class="icon is-small">
@@ -97,7 +91,20 @@
               </span>
               <span>開始</span>
             </button>
+            <button id="capture-camera" type="button" class="button is-small">撮影</button>
+            <button id="select-file" type="button" class="button is-small">
+              <span class="icon is-small">
+                <i class="fas fa-file-import"></i>
+              </span>
+            </button>
+            <input type="file" id="select-file-input" accept="image/*" capture="camera" style="display:none" />
           </div>
+          <video id="video-camera" style="width:60vw;height:50vh;"></video>
+          <canvas id="preview-canvas" style="width:60vw;display:none"></canvas>
+          <canvas id="result-canvas" width="300" height="300" style="display:none"></canvas>
+          <audio id="capture-sound" preload="auto">
+            <source src="camera-shutter1.mp3" type="audio/mp3">
+          </audio>
         </section>
         <footer class="modal-card-foot">
             <button id="start-camera" type="button" class="button is-small">
