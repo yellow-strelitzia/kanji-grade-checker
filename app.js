@@ -345,7 +345,7 @@ window.addEventListener( "DOMContentLoaded", function() {
       });
       // check recognition result
       ocrresult = text.replace(/ /g,"");  // current hack, captured result often include unexpected space.
-      if ( ocr_result.length === 0 ) {
+      if ( ocrresult.length === 0 ) {
         progressCaption.innerHTML = "文字を認識できませんでした";
         await new Promise(r => setTimeout(r,2000));
       }
