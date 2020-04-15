@@ -155,8 +155,15 @@ let kanjiGradeUtil = {
 window.addEventListener( "DOMContentLoaded", function() {
   // setup 
 
+  // reset grade button color
+  const resetGradeButtonColor = () => {
+    for (const toggleElement of document.getElementsByClassName("tobble-button-caption")) {
+      toggleElement.classList.add("color-on");
+    }
+  };
+
   // Execute Click
-  const actionClickExecute = async ( event ) => {
+  const actionClickExecuteCheck = async ( event ) => {
     console.log( "Execute button clicked." );
     let src = document.getElementById( "originalText" );
     let dest = document.getElementById( "resultArea" );
@@ -169,10 +176,11 @@ window.addEventListener( "DOMContentLoaded", function() {
       await kanjiGradeUtil.getKuromojiTokenizer();
       modalProgress.classList.toggle('is-active');
     }
+    resetGradeButtonColor();
     dest.innerHTML = kanjiGradeUtil.extractCheckedResult( src.value );  
   };
-  let btnExec = document.getElementById( "buttonExec" ); 
-  btnExec.addEventListener( "click", actionClickExecute, false );
+  let btnExecCheck = document.getElementById( "buttonExecCheck" ); 
+  btnExecCheck.addEventListener( "click", actionClickExecuteCheck, false );
 
   // Start Camera
   const actionClickStartCamera = ( event ) => {
