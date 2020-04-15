@@ -3,10 +3,11 @@ const axios = require('axios');
 module.exports = (req, res) => {
   const url = 'http://yellow-strelitzia-ocr-server1.herokuapp.com/';
   
+  let parameters = null;
   if ( Object.keys(req.query) > 0 ){
-    const parameters = req.query;
+    parameters = req.query;
   } else {
-    const parameters = req.body;
+    parameters = req.body;
   }
 
   if ( parameters.type == 'echo' ) {
