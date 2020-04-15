@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
   
   if ( Object.keys(req.query) > 0 ){
     const parameters = req.query;
-  } else {}
+  } else {
     const parameters = req.body;
   }
 
