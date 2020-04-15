@@ -9,7 +9,10 @@ module.exports = (req, res) => {
   } else {
     parameters = req.body;
   }
-  console.log(req.query);
+  console.log('req.query' + req.query);
+  console.log('req.query.type' + req.query.type);
+  console.log('req.query["type"]' + req.query["type"]);
+  console.log('req.body' + req.query);
   console.log(parameters);
 
   if ( parameters.type == 'echo' ) {
