@@ -312,8 +312,7 @@ window.addEventListener( "DOMContentLoaded", function() {
         alert("failed to post OCR request");
       }
 
-      const orc_request_id = result_recognize_json['requestid'];
-      let ocr_result = "未認識";    
+      const orc_request_id = result_recognize_json['requestid']; 
       let resultparams = new URLSearchParams();
       resultparams.set("type", "result");
       resultparams.set("requestid", orc_request_id);
@@ -323,7 +322,7 @@ window.addEventListener( "DOMContentLoaded", function() {
         if ( "result" in result_result && 
              "status" in result_result &&
              result_result["status"] == "success") {
-          ocr_result = result_result['result']
+          ocrresult = result_result['result']
           break;
         }
         await new Promise(r => setTimeout(r,2000));
@@ -335,7 +334,7 @@ window.addEventListener( "DOMContentLoaded", function() {
           preserve_interword_spaces : 0
       });
       // check recognition result
-      let ocr_result = text.replace(/ /g,"");  // current hack, captured result often include unexpected space.
+      ocrresult = text.replace(/ /g,"");  // current hack, captured result often include unexpected space.
       if ( ocr_result.length === 0 ) {
         progressCaption.innerHTML = "文字を認識できませんでした";
         await new Promise(r => setTimeout(r,2000));
@@ -348,7 +347,7 @@ window.addEventListener( "DOMContentLoaded", function() {
     modalProgress.classList.toggle( "is-active" );
 
     let target = document.getElementById( "originalText" );
-    target.value = ocr_result;
+    target.value = ocrresult;
   };
   let btnRecognizeCapture = document.getElementById( "recognize-capture" );
   btnRecognizeCapture.addEventListener( "click", recognizCapture );
