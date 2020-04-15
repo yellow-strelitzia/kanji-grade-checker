@@ -282,6 +282,8 @@ window.addEventListener( "DOMContentLoaded", function() {
     let progressCaption = document.getElementById( "progress-caption" );
     let direction = document.getElementById( "detect-direction" );
     const direction_value = direction.options[direction.selectedIndex].value;
+    let localServer = document.getElementById( "local-server-flag" );
+    let localServerFlag = localServer.checked;
     let ocrLanguage = "jpn";
     let ocrSegMode = 6;
     if ( direction_value == "vertical" ) {
@@ -294,7 +296,7 @@ window.addEventListener( "DOMContentLoaded", function() {
  　 
     let ocrresult = "未認識";
 
-    if ( true )
+    if ( localServerFlag )
     {
       let url = "https://kanji-grade-checker.netlify.com/.netlify/functions/ocr";
       if ( document.location.host.indexOf('kanji-grade-checker.now.sh') != -1 ) {
@@ -359,6 +361,16 @@ window.addEventListener( "DOMContentLoaded", function() {
   };
   let btnRecognizeCapture = document.getElementById( "recognize-capture" );
   btnRecognizeCapture.addEventListener( "click", recognizCapture );
+
+  // warn server API useage
+  const actionCheckLocalServer = ( event ) => {
+    let checkLocalServer = document.getElementById( "local-server-flag" );
+    if ( checkLocalServer.checked ) {
+      alert("alert");
+    }
+  };
+  let checkLocalServer = document.getElementById( "local-server-flag" );
+  checkLocalServer.addEventListener( "change", actionCheckLocalServer );
 
   // global utility setup
   kanjiGradeUtil.loadKanjiGradeMaster( "kanji_grade_info.json" );
