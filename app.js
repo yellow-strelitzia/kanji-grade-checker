@@ -294,48 +294,77 @@ window.addEventListener( "DOMContentLoaded", function() {
  
     modalProgress.classList.toggle( "is-active" );
  　 
-    let ocrresult = "未認識";
+    let ocrresult = null;
 
     if ( localServerFlag )
     {
-      let url = "https://kanji-grade-checker.netlify.com/.netlify/functions/ocr";
-      if ( document.location.host.indexOf('kanji-grade-checker.now.sh') != -1 ) {
-        url = "https://kanji-grade-checker.now.sh/api/ocr";
-      }
-      const canvas_image = canvas.toDataURL("image/png");
-
-      // echo for check ocr server activity
-      let echoparams = new URLSearchParams();
-      echoparams.set("type", "echo");
-      const echo_res = await fetch(url + "?" + echoparams.toString());
-      const result_echo = await echo_res.data;
-
-      const fetch_recognize_res = await fetch(url, {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json"},
-        body: JSON.stringify({"type": "recognize",
-                              "data": canvas_image, 
-                              "direction": direction_value})
-      });
-      const result_recognize_json = await fetch_recognize_res.json();
-      if(result_recognize_json["status"] == "error"){ //WEBAPI側で"error"と判断されたらアラートする
-        alert("failed to post OCR request");
-      }
-
-      const orc_request_id = result_recognize_json['requestid']; 
-      let resultparams = new URLSearchParams();
-      resultparams.set("type", "result");
-      resultparams.set("requestid", orc_request_id);
-      for (let i = 0;  i < 30;  i++) {
-        const echo_res = await fetch(url + '?' + resultparams.toString())
-        const result_result = await echo_res.json()
-        if ( "result" in result_result && 
-             "status" in result_result &&
-             result_result["status"] == "success") {
-          ocrresult = result_result['result']
-          break;
+      try {
+        let url = "https://kanji-grade-checker.netlify.com/.netlify/functions/ocr";
+        if ( document.location.host.indexOf('kanji-grade-checker.now.sh') != -1 ) {
+          url = "https://kanji-grade-checker.now.sh/api/ocr";
         }
-        await new Promise(r => setTimeout(r,1500));
+        const canvas_image = canvas.toDataURL("image/png");
+
+        // echo for check ocr server activity
+        let echoparams = new URLSearchParams();
+        echoparams.set("type", "echo");
+
+        // try to get echo request 3 times
+        let echoFlag = false;
+        for(let i = 0; i < 3; i++) {
+          const echo_res = await fetch(url + "?" + echoparams.toString());
+          const result_echo = await echo_res.data;
+          if ( echo_res.ok ) {
+            echoFlag = true;
+            break;
+          }
+        }
+        if ( !echoFlag ) {
+          progressCaption.innerHTML = "OCRサーバーの接続確認に失敗しました。";
+          throw new Error("Failed to get echo response.");                    
+        }
+
+        const fetch_recognize_res = await fetch(url, {
+          method: "POST",
+          headers: { "Accept": "application/json", "Content-Type": "application/json"},
+          body: JSON.stringify({"type": "recognize",
+                                "data": canvas_image, 
+                                "direction": direction_value})
+        });
+        const result_recognize_json = await fetch_recognize_res.json();
+        if( !fetch_recognize_res.ok ) {
+          progressCaption.innerHTML = "OCR結果の取得に失敗しました。";
+          throw new Error("Failed to get recognize response.");        
+        }
+
+        if(result_recognize_json["status"] == "error"){ //WEBAPI側で"error"と判断されたらアラートする
+          progressCaption.innerHTML = "OCR結果の取得に失敗しました。";
+          throw new Error("Failed to get recognize response.");        
+        }
+
+        const orc_request_id = result_recognize_json['requestid']; 
+        let resultparams = new URLSearchParams();
+        resultparams.set("type", "result");
+        resultparams.set("requestid", orc_request_id);
+        for (let i = 0;  i < 30;  i++) {
+          const echo_res = await fetch(url + '?' + resultparams.toString())
+          const result_result = await echo_res.json()
+          if ( "result" in result_result && 
+               "status" in result_result &&
+               result_result["status"] == "success") {
+            ocrresult = result_result['result']
+            break;
+          }
+          await new Promise(r => setTimeout(r,1500));
+        }
+        if ( ocrresult == null ) {
+          progressCaption.innerHTML = "OCR結果の取得に失敗しました。";
+          ocrresult = "読み取り失敗";
+          await new Promise(r => setTimeout(r,2000));
+        }
+      } catch (e) {
+        progressCaption.innerHTML = "OCRサーバーの呼び出しに失敗しました。";
+        await new Promise(r => setTimeout(r,2000));
       }
     } else {
       const { data: { text } } = await Tesseract.recognize(canvas, ocrLanguage, {
@@ -347,6 +376,7 @@ window.addEventListener( "DOMContentLoaded", function() {
       ocrresult = text.replace(/ /g,"");  // current hack, captured result often include unexpected space.
       if ( ocrresult.length === 0 ) {
         progressCaption.innerHTML = "文字を認識できませんでした";
+        ocrresult = "読み取り失敗";
         await new Promise(r => setTimeout(r,2000));
       }
       else {
