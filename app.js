@@ -299,7 +299,7 @@ window.addEventListener( "DOMContentLoaded", function() {
     if ( localServerFlag )
     {
       try {
-        let url = "https://kanji-grade-checker.netlify.com/.netlify/functions/ocr";
+        let url = "https://kanji-grade-checker.netlify.app/.netlify/functions/ocr";
         if ( document.location.host.indexOf('kanji-grade-checker.now.sh') != -1 ) {
           url = "https://kanji-grade-checker.now.sh/api/ocr";
         }
